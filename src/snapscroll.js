@@ -53,7 +53,7 @@ class SnapScroll extends Component {
   }
   fixScroll () {
     this.hasMomentum = false
-    const nextPosition = calculateSnap(this.refs.wrapper.scrollPosition, this.heights)
+    const nextPosition = calculateSnap(this.refs.wrapper, this.heights)
     this.isFixing = true
     scrollToWithAnimation(
       this.refs.wrapper,
@@ -79,40 +79,40 @@ function analyseScroll (delta0, delta1) {
   return acceleration
 }
 
-function calculateSnap (position, limits) {
-  const targetIndex = limits.findIndex((topEdge) => position < topEdge)
-  const top = limits[targetIndex - 1]
-  const bottom = limits[targetIndex]
-  const gap2top = Math.abs(top - position)
-  const gap2bottom = Math.abs(bottom - position)
-  if (gap2top < gap2bottom) return top
-  else return bottom
-}
-
-// function calculateSnap (element, limits) {
-//   const scrollPosition = element.scrollTop
-//   const visibleEdge = element.offsetHeight + scrollPosition
-//
-//   const topEdgeIndex = limits.findIndex((position) => scrollPosition < position) - 1
-//   const bottomEdgeIndex = limits.findIndex((position) => visibleEdge < position)
-//
-//   // scrolling the same element
-//   if (topEdgeIndex === bottomEdgeIndex - 1) return scrollPosition
-//
-//   // check top edge nearness
-//   const top = limits[topEdgeIndex - 1]
-//   const bottom = limits[topEdgeIndex]
-//   const gap2top = Math.abs(top - scrollPosition)
-//   const gap2bottom = Math.abs(bottom - scrollPosition)
-//
-//   // check bottom edge nearness
-//   const bottomToPrevious = limits[topEdgeIndex - 1]
-//   const bottomToNext = limits[topEdgeIndex]
-//   const gap2top = Math.abs(top - scrollPosition)
-//   const gap2bottom = Math.abs(bottom - scrollPosition)
-//
+// function calculateSnap (position, limits) {
+//   const targetIndex = limits.findIndex((topEdge) => position < topEdge)
+//   const top = limits[targetIndex - 1]
+//   const bottom = limits[targetIndex]
+//   const gap2top = Math.abs(top - position)
+//   const gap2bottom = Math.abs(bottom - position)
 //   if (gap2top < gap2bottom) return top
 //   else return bottom
 // }
+
+function calculateSnap (element, limits) {
+  const scrollPosition = element.scrollTop
+  const visibleEdge = element.offsetHeight + scrollPosition
+
+  const topEdgeIndex = limits.findIndex((position) => scrollPosition < position) - 1
+  const bottomEdgeIndex = limits.findIndex((position) => visibleEdge < position)
+
+  // scrolling the same element
+  if (topEdgeIndex === bottomEdgeIndex - 1) return scrollPosition
+
+  // check top edge nearness
+  const top = limits[topEdgeIndex - 1]
+  const bottom = limits[topEdgeIndex]
+  const gap2top = Math.abs(top - scrollPosition)
+  const gap2bottom = Math.abs(bottom - scrollPosition)
+
+  // check bottom edge nearness
+  const bottomToPrevious = limits[topEdgeIndex - 1]
+  const bottomToNext = limits[topEdgeIndex]
+  const gap2top = Math.abs(top - scrollPosition)
+  const gap2bottom = Math.abs(bottom - scrollPosition)
+
+  if (gap2top < gap2bottom) return top
+  else return bottom
+}
 
 export default SnapScroll
